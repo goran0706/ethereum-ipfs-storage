@@ -10,7 +10,7 @@ const ErrorPage = () => {
       <Text>
         {isRouteErrorResponse(error)
           ? 'This page does not exist.'
-          : 'An unexpected error occurred. Please check if you are connected to the supported network'}
+          : 'An unexpected error occurred. Please check if you are connected to the supported network (Sepolia)'}
       </Text>
       <Button size='md' colorScheme='gray' as={Link} to='/'>
         Go back
