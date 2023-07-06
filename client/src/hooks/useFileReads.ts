@@ -7,38 +7,35 @@ export default function useFileReads() {
     error: errorNFTs,
     isError: isErrorNFTs,
     isLoading: isLoadingNFTs
-  } = useFileRead('getNFTs')
+  } = useFileRead<IFileInfo[]>('getNFTs')
   const {
     data: photos,
     error: errorPhotos,
     isError: isErrorPhotos,
     isLoading: isLoadingPhotos
-  } = useFileRead('getPhotos')
+  } = useFileRead<IFileInfo[]>('getPhotos')
   const {
     data: videos,
     error: errorVideos,
     isError: isErrorVideos,
     isLoading: isLoadingVideos
-  } = useFileRead('getVideos')
+  } = useFileRead<IFileInfo[]>('getVideos')
   const {
     data: audios,
     error: errorAudios,
     isError: isErrorAudios,
     isLoading: isLoadingAudios
-  } = useFileRead('getAudios')
+  } = useFileRead<IFileInfo[]>('getAudios')
   const {
     data: documents,
     error: errorDocuments,
     isError: isErrorDocuments,
     isLoading: isLoadingDocuments
-  } = useFileRead('getDocuments')
+  } = useFileRead<IFileInfo[]>('getDocuments')
 
   const list = [nfts, photos, videos, audios, documents]
 
-  const data: IFileInfo[] = list.reduce(
-    (acc: IFileInfo[], curr) => acc.concat(curr as IFileInfo[]),
-    []
-  )
+  const data = list.reduce((acc, curr) => curr && acc.concat(curr), [])
 
   const error = errorNFTs || errorPhotos || errorVideos || errorAudios || errorDocuments
 
