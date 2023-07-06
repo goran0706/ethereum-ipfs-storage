@@ -1,6 +1,6 @@
-import { Spinner, VStack } from '@chakra-ui/react'
+import { VStack } from '@chakra-ui/react'
 
-import { FileCard, FileGrid, FileHeading, Search } from '../components'
+import { FileCard, FileGrid, FileHeading, Search, Spinner } from '../components'
 import requireConnect from '../components/hoc/requireConnection'
 import useFileReads from '../hooks/useFileReads'
 import useSearchQuery from '../hooks/useSearchQuery'
