@@ -1,0 +1,8 @@
+export { default as AudiosPage } from './AudiosPage.tsx'
+export { default as DocumentsPage } from './DocumentsPage.tsx'
+export { default as ErrorPage } from './ErrorPage.tsx'
+export { default as HomePage } from './HomePage.tsx'
+export { default as NFTsPage } from './NFTsPage.tsx'
+export { default as PhotosPage } from './PhotosPage.tsx'
+export { default as UploadPage } from './UploadPage.tsx'
+export { default as VideosPage } from './VideosPage.tsx'
