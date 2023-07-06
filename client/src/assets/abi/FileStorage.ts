@@ -656,7 +656,7 @@ export default [
       },
       {
         internalType: 'uint256',
-        name: 'id',
+        name: 'index',
         type: 'uint256'
       }
     ],

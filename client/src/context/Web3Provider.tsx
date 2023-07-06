@@ -2,12 +2,12 @@ import { useColorMode } from '@chakra-ui/react'
 import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
 import { Web3Modal } from '@web3modal/react'
 import { ReactNode } from 'react'
-import { WagmiConfig, configureChains, createConfig } from 'wagmi'
+import { WagmiConfig, configureChains, createConfig, sepolia } from 'wagmi'
 import { arbitrum, localhost, mainnet, polygon } from 'wagmi/chains'
 
 import { PROJECT_ID } from '../constants'
 
-const chains = [arbitrum, mainnet, polygon, localhost]
+const chains = [arbitrum, mainnet, polygon, localhost, sepolia]
 const projectId = PROJECT_ID
 const { publicClient } = configureChains(chains, [w3mProvider({ projectId })])
 const wagmiConfig = createConfig({
