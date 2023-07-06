@@ -9,8 +9,8 @@ import { filterData } from '../services'
 
 const AudiosPage = () => {
   const { query } = useSearchQuery()
-  const { data, error, isError, isLoading } = useFileRead('getAudios')
-  const filteredData = filterData(data as IFileInfo[], query)
+  const { data, error, isError, isLoading } = useFileRead<IFileInfo[]>('getAudios')
+  const filteredData = filterData(data, query)
 
   if (isLoading) return <Spinner />
 

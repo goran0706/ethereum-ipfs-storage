@@ -9,8 +9,8 @@ import { filterData } from '../services'
 
 const NFTsPage = () => {
   const { query } = useSearchQuery()
-  const { data, error, isError, isLoading } = useFileRead('getNFTs')
-  const filteredData = filterData(data as IFileInfo[], query)
+  const { data, error, isError, isLoading } = useFileRead<IFileInfo[]>('getNFTs')
+  const filteredData = filterData(data, query)
 
   if (isLoading) return <Spinner />
 

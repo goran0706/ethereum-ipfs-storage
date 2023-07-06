@@ -27,6 +27,7 @@ import requireConnect from '../components/hoc/requireConnection'
 import { FileType, fileTypeToStringMapping, fnMapping } from '../constants'
 import useFileRead from '../hooks/useFileRead'
 import useFileWrite from '../hooks/useFileWrite'
+import { IFileInfo } from '../interfaces'
 import { downloadLink } from '../services'
 
 const FileDetailsPage = () => {
@@ -41,7 +42,10 @@ const FileDetailsPage = () => {
   const params = useParams()
   const parts: string[] = params['*']?.split('/') as string[]
 
-  const { data, error, isError, isLoading } = useFileRead(fnMapping[parts[0]], parseInt(parts[1]))
+  const { data, error, isError, isLoading } = useFileRead<IFileInfo>(
+    fnMapping[parts[0]],
+    parseInt(parts[1])
+  )
 
   const {
     updateFile: { write: update, isSuccess: isSuccessUpdate },

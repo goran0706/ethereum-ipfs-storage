@@ -1,9 +1,8 @@
 import { useContractRead } from 'wagmi'
 
 import { contract } from '../constants'
-import { IFileInfo } from '../interfaces'
 
-const useFileRead = (getter: string, id?: number) => {
+const useFileRead = <T>(getter: string, id?: number) => {
   const config = {
     ...contract,
     functionName: getter,
@@ -13,7 +12,7 @@ const useFileRead = (getter: string, id?: number) => {
   const { data, error, isError, isLoading } = useContractRead(config)
 
   return {
-    data: data as IFileInfo,
+    data: data as T,
     error,
     isError,
     isLoading

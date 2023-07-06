@@ -9,8 +9,8 @@ import { filterData } from '../services'
 
 const DocumentsPage = () => {
   const { query } = useSearchQuery()
-  const { data, error, isError, isLoading } = useFileRead('getDocuments')
-  const filteredData = filterData(data as IFileInfo[], query)
+  const { data, error, isError, isLoading } = useFileRead<IFileInfo[]>('getDocuments')
+  const filteredData = filterData(data, query)
 
   if (isLoading) return <Spinner />
 

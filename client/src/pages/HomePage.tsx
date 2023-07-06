@@ -4,13 +4,12 @@ import { FileCard, FileGrid, FileHeading, Search } from '../components'
 import requireConnect from '../components/hoc/requireConnection'
 import useFileReads from '../hooks/useFileReads'
 import useSearchQuery from '../hooks/useSearchQuery'
-import { IFileInfo } from '../interfaces'
 import { filterData } from '../services'
 
 const HomePage = () => {
   const { query } = useSearchQuery()
   const { data, error, isError, isLoading } = useFileReads()
-  const filteredData = filterData(data as IFileInfo[], query)
+  const filteredData = filterData(data, query)
 
   if (isLoading) return <Spinner />
 
