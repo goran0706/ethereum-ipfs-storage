@@ -1,4 +1,5 @@
 import {
+  Badge,
   Box,
   Button,
   Center,
@@ -10,8 +11,7 @@ import {
   Image,
   ImageProps,
   Input,
-  Radio,
-  RadioGroup,
+  Select,
   SimpleGrid,
   Stack,
   StackDivider,
@@ -28,7 +28,7 @@ import VideoPlaceholder from '../assets/video-placeholder.png'
 import { AudioPlayer, Spinner, VideoPlayer } from '../components'
 import EditableControls from '../components/EditableControls'
 import requireConnect from '../components/hoc/requireConnection'
-import { FileType, fnMapping, typeStringMapping } from '../constants'
+import { FileType, fileTypeString, fileTypeUrlMapping, fnMapping } from '../constants'
 import useFileRead from '../hooks/useFileRead'
 import useFileWrite from '../hooks/useFileWrite'
 import { IFileInfo } from '../interfaces'
@@ -38,7 +38,7 @@ const FileDetailsPage = () => {
   const nameRef = useRef<HTMLInputElement>(null)
   const urlRef = useRef<HTMLInputElement>(null)
   const descRef = useRef<HTMLInputElement>(null)
-  const typeRef = useRef<HTMLInputElement>(null)
+  const typeRef = useRef<HTMLSelectElement>(null)
 
   const primaryFontColor = useColorModeValue('gray.700', 'gray.200')
   const secondaryFontColor = useColorModeValue('gray.300', 'gray.600')
@@ -58,11 +58,11 @@ const FileDetailsPage = () => {
   } = useFileWrite()
 
   useEffect(() => {
-    if (isSuccessUpdate) navigate(`/${typeStringMapping[data?.fileType]}`)
+    if (isSuccessUpdate) navigate(`/${fileTypeUrlMapping[data?.fileType]}`)
   }, [data?.fileType, isSuccessUpdate, navigate])
 
   useEffect(() => {
-    if (isSuccessRemove) navigate(`/${typeStringMapping[data?.fileType]}`)
+    if (isSuccessRemove) navigate(`/${fileTypeUrlMapping[data?.fileType]}`)
   }, [data?.fileType, isSuccessRemove, navigate])
 
   const handleReload = () => location.reload()
@@ -78,6 +78,7 @@ const FileDetailsPage = () => {
     const url = urlRef.current?.value
     const desc = descRef.current?.value
     const type = typeRef.current?.value
+    console.log(type)
     update({ args: [type, data?.id, name, url, desc] })
   }
 
@@ -195,15 +196,26 @@ const FileDetailsPage = () => {
           <Heading size='xs' textTransform='uppercase'>
             File Type
           </Heading>
-          <RadioGroup pt={6} gap={2} name='type' defaultValue={data.fileType.toString()}>
-            <HStack spacing='24px' wrap='wrap'>
-              <Radio value='0'>NFT</Radio>
-              <Radio value='1'>Photo</Radio>
-              <Radio value='2'>Video</Radio>
-              <Radio value='3'>Audio</Radio>
-              <Radio value='4'>Document</Radio>
-            </HStack>
-          </RadioGroup>
+          <HStack spacing={2} pt='2' justifyContent='space-between' w='100%'>
+            <Badge variant='subtle' colorScheme='green' borderRadius='md'>
+              {fileTypeString[data.fileType]}
+            </Badge>
+            <Select
+              defaultValue={data.fileType}
+              placeholder='Select type'
+              variant='filled'
+              maxW='150px'
+              size='sm'
+              borderRadius='md'
+              ref={typeRef}
+            >
+              <option value='0'>NFT</option>
+              <option value='1'>Photo</option>
+              <option value='2'>Video</option>
+              <option value='3'>Audio</option>
+              <option value='4'>Document</option>
+            </Select>
+          </HStack>
         </Box>
         <Stack direction={['column', 'row']} spacing={2} wrap='wrap' w='full' pt={6}>
           <Button size='md' colorScheme='gray' onClick={handleReload}>
