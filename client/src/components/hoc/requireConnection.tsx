@@ -25,3 +25,5 @@ const requireConnect = (Component: ComponentType) => () => {
 }
 
 export default requireConnect
+
+

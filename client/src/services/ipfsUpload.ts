@@ -1,16 +1,17 @@
 import { pinataClient } from '.'
 import { PINATA_API_URL, PINATA_DOMAIN, PINATA_JWT } from '../constants'
 
-const ipfsUpload = (
+const ipfsUpload = async (
   file: File,
   fileName: string,
   fileType: string,
   externalUrl: string,
-  description: string
+  description: string,
+  category: string
 ) => {
   const metadata = JSON.stringify({
     name: 'file',
-    keyvalues: { fileName, fileType, externalUrl, description }
+    keyvalues: { fileName, fileType, externalUrl, description, category }
   })
   const options = JSON.stringify({ cidVersion: 0 })
 
@@ -19,22 +20,17 @@ const ipfsUpload = (
   formData.append('pinataMetadata', metadata)
   formData.append('pinataOptions', options)
 
-  return pinataClient
-    .post(PINATA_API_URL, formData, {
-      maxBodyLength: Infinity,
-      headers: {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        //@ts-ignore
-        'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
-        Authorization: `Bearer ${PINATA_JWT}`
-      }
-    })
-    .then(res => {
-      return `${PINATA_DOMAIN + res.data.IpfsHash}`
-    })
-    .catch(error => {
-      throw error
-    })
+  const res = await pinataClient.post(PINATA_API_URL, formData, {
+    maxBodyLength: Infinity,
+    headers: {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
+      'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
+      Authorization: `Bearer ${PINATA_JWT}`
+    }
+  })
+
+  return `${PINATA_DOMAIN + res.data.IpfsHash}`
 }
 
 export default ipfsUpload

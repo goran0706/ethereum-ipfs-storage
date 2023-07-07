@@ -51,6 +51,7 @@ interface State {
   fileType: string
   externalUrl: string
   description: string
+  category: string
   loading: boolean
 }
 
@@ -77,15 +78,18 @@ const initialState = {
   file: null,
   preview: null,
   fileName: '',
-  fileType: '0',
+  fileType: '',
   externalUrl: '',
   description: '',
+  category: '0',
   loading: false
 }
 
 const Uploader = () => {
-  const [{ file, preview, fileName, fileType, externalUrl, description, loading }, dispatch] =
-    useReducer(uploadReducer, initialState)
+  const [
+    { file, preview, fileName, fileType, externalUrl, description, category, loading },
+    dispatch
+  ] = useReducer(uploadReducer, initialState)
 
   const fileRef = useRef<HTMLInputElement>(null)
 
@@ -107,11 +111,16 @@ const Uploader = () => {
 
   const handleChange = (event: ChangeEvent | string) => {
     if (typeof event === 'string') {
-      dispatch({ type: ActionTypes.ON_CHANGE, payload: { fileType: event } })
+      // radio button / event = value
+      dispatch({ type: ActionTypes.ON_CHANGE, payload: { category: event } })
     } else {
       const { name, value, files } = event.target as HTMLInputElement
-      const temp = { [name]: name === 'file' && files ? files[0] : value }
-      dispatch({ type: ActionTypes.ON_CHANGE, payload: temp })
+      if (name === 'file') {
+        const file = files && files[0]
+        dispatch({ type: ActionTypes.ON_CHANGE, payload: { [name]: file, fileType: file?.type } })
+      } else {
+        dispatch({ type: ActionTypes.ON_CHANGE, payload: { [name]: value } })
+      }
     }
   }
 
@@ -124,18 +133,18 @@ const Uploader = () => {
     event.preventDefault()
     if (file) {
       dispatch({ type: ActionTypes.REQUEST })
-      ipfsUpload(file, fileName, fileType, externalUrl, description)
-        .then(path => {
+      ipfsUpload(file, fileName, fileType, externalUrl, description, category)
+        .then(filePath => {
           toast({
             title: 'IPFS Upload Success',
-            description: path,
+            description: filePath,
             variant: 'solid',
             position: 'bottom',
             status: 'success',
             duration: 3000,
             isClosable: true
           })
-          write({ args: [fileType, fileName, path, externalUrl, description] })
+          write({ args: [fileName, fileType, filePath, externalUrl, description, category] })
           dispatch({ type: ActionTypes.SUCCESS })
         })
         .catch(error => {
@@ -204,7 +213,7 @@ const Uploader = () => {
           </FormControl>
           <FormControl as='fieldset'>
             <FormLabel as='legend'>File Type</FormLabel>
-            <RadioGroup name='type' value={fileType} defaultValue='0' onChange={handleChange}>
+            <RadioGroup name='category' value={category} defaultValue='0' onChange={handleChange}>
               <HStack spacing='24px' wrap='wrap'>
                 <Radio value='0'>NFT</Radio>
                 <Radio value='1'>Photo</Radio>
@@ -213,7 +222,7 @@ const Uploader = () => {
                 <Radio value='4'>Document</Radio>
               </HStack>
             </RadioGroup>
-            <FormHelperText>Please select a file type.</FormHelperText>
+            <FormHelperText>Please chose a category.</FormHelperText>
           </FormControl>
           <FormControl></FormControl>
           {isConnected ? (

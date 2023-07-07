@@ -10,13 +10,13 @@ export default [
             type: 'uint256'
           },
           {
-            internalType: 'enum FileStorage.FileType',
-            name: 'fileType',
-            type: 'uint8'
+            internalType: 'string',
+            name: 'fileName',
+            type: 'string'
           },
           {
             internalType: 'string',
-            name: 'fileName',
+            name: 'fileType',
             type: 'string'
           },
           {
@@ -33,6 +33,11 @@ export default [
             internalType: 'string',
             name: 'description',
             type: 'string'
+          },
+          {
+            internalType: 'enum FileStorage.Category',
+            name: 'category',
+            type: 'uint8'
           }
         ],
         indexed: false,
@@ -55,13 +60,13 @@ export default [
             type: 'uint256'
           },
           {
-            internalType: 'enum FileStorage.FileType',
-            name: 'fileType',
-            type: 'uint8'
+            internalType: 'string',
+            name: 'fileName',
+            type: 'string'
           },
           {
             internalType: 'string',
-            name: 'fileName',
+            name: 'fileType',
             type: 'string'
           },
           {
@@ -78,6 +83,11 @@ export default [
             internalType: 'string',
             name: 'description',
             type: 'string'
+          },
+          {
+            internalType: 'enum FileStorage.Category',
+            name: 'category',
+            type: 'uint8'
           }
         ],
         indexed: false,
@@ -100,13 +110,13 @@ export default [
             type: 'uint256'
           },
           {
-            internalType: 'enum FileStorage.FileType',
-            name: 'fileType',
-            type: 'uint8'
+            internalType: 'string',
+            name: 'fileName',
+            type: 'string'
           },
           {
             internalType: 'string',
-            name: 'fileName',
+            name: 'fileType',
             type: 'string'
           },
           {
@@ -123,6 +133,11 @@ export default [
             internalType: 'string',
             name: 'description',
             type: 'string'
+          },
+          {
+            internalType: 'enum FileStorage.Category',
+            name: 'category',
+            type: 'uint8'
           }
         ],
         indexed: false,
@@ -137,13 +152,13 @@ export default [
   {
     inputs: [
       {
-        internalType: 'enum FileStorage.FileType',
-        name: 'fileType',
-        type: 'uint8'
+        internalType: 'string',
+        name: 'fileName',
+        type: 'string'
       },
       {
         internalType: 'string',
-        name: 'fileName',
+        name: 'fileType',
         type: 'string'
       },
       {
@@ -160,6 +175,11 @@ export default [
         internalType: 'string',
         name: 'description',
         type: 'string'
+      },
+      {
+        internalType: 'enum FileStorage.Category',
+        name: 'category',
+        type: 'uint8'
       }
     ],
     name: 'addFile',
@@ -185,13 +205,13 @@ export default [
             type: 'uint256'
           },
           {
-            internalType: 'enum FileStorage.FileType',
-            name: 'fileType',
-            type: 'uint8'
+            internalType: 'string',
+            name: 'fileName',
+            type: 'string'
           },
           {
             internalType: 'string',
-            name: 'fileName',
+            name: 'fileType',
             type: 'string'
           },
           {
@@ -208,6 +228,11 @@ export default [
             internalType: 'string',
             name: 'description',
             type: 'string'
+          },
+          {
+            internalType: 'enum FileStorage.Category',
+            name: 'category',
+            type: 'uint8'
           }
         ],
         internalType: 'struct FileStorage.File',
@@ -230,13 +255,13 @@ export default [
             type: 'uint256'
           },
           {
-            internalType: 'enum FileStorage.FileType',
-            name: 'fileType',
-            type: 'uint8'
+            internalType: 'string',
+            name: 'fileName',
+            type: 'string'
           },
           {
             internalType: 'string',
-            name: 'fileName',
+            name: 'fileType',
             type: 'string'
           },
           {
@@ -253,6 +278,11 @@ export default [
             internalType: 'string',
             name: 'description',
             type: 'string'
+          },
+          {
+            internalType: 'enum FileStorage.Category',
+            name: 'category',
+            type: 'uint8'
           }
         ],
         internalType: 'struct FileStorage.File[]',
@@ -281,13 +311,13 @@ export default [
             type: 'uint256'
           },
           {
-            internalType: 'enum FileStorage.FileType',
-            name: 'fileType',
-            type: 'uint8'
+            internalType: 'string',
+            name: 'fileName',
+            type: 'string'
           },
           {
             internalType: 'string',
-            name: 'fileName',
+            name: 'fileType',
             type: 'string'
           },
           {
@@ -304,6 +334,11 @@ export default [
             internalType: 'string',
             name: 'description',
             type: 'string'
+          },
+          {
+            internalType: 'enum FileStorage.Category',
+            name: 'category',
+            type: 'uint8'
           }
         ],
         internalType: 'struct FileStorage.File',
@@ -326,13 +361,13 @@ export default [
             type: 'uint256'
           },
           {
-            internalType: 'enum FileStorage.FileType',
-            name: 'fileType',
-            type: 'uint8'
+            internalType: 'string',
+            name: 'fileName',
+            type: 'string'
           },
           {
             internalType: 'string',
-            name: 'fileName',
+            name: 'fileType',
             type: 'string'
           },
           {
@@ -349,6 +384,11 @@ export default [
             internalType: 'string',
             name: 'description',
             type: 'string'
+          },
+          {
+            internalType: 'enum FileStorage.Category',
+            name: 'category',
+            type: 'uint8'
           }
         ],
         internalType: 'struct FileStorage.File[]',
@@ -377,13 +417,13 @@ export default [
             type: 'uint256'
           },
           {
-            internalType: 'enum FileStorage.FileType',
-            name: 'fileType',
-            type: 'uint8'
+            internalType: 'string',
+            name: 'fileName',
+            type: 'string'
           },
           {
             internalType: 'string',
-            name: 'fileName',
+            name: 'fileType',
             type: 'string'
           },
           {
@@ -400,6 +440,11 @@ export default [
             internalType: 'string',
             name: 'description',
             type: 'string'
+          },
+          {
+            internalType: 'enum FileStorage.Category',
+            name: 'category',
+            type: 'uint8'
           }
         ],
         internalType: 'struct FileStorage.File',
@@ -422,13 +467,13 @@ export default [
             type: 'uint256'
           },
           {
-            internalType: 'enum FileStorage.FileType',
-            name: 'fileType',
-            type: 'uint8'
+            internalType: 'string',
+            name: 'fileName',
+            type: 'string'
           },
           {
             internalType: 'string',
-            name: 'fileName',
+            name: 'fileType',
             type: 'string'
           },
           {
@@ -445,6 +490,11 @@ export default [
             internalType: 'string',
             name: 'description',
             type: 'string'
+          },
+          {
+            internalType: 'enum FileStorage.Category',
+            name: 'category',
+            type: 'uint8'
           }
         ],
         internalType: 'struct FileStorage.File[]',
@@ -473,13 +523,13 @@ export default [
             type: 'uint256'
           },
           {
-            internalType: 'enum FileStorage.FileType',
-            name: 'fileType',
-            type: 'uint8'
+            internalType: 'string',
+            name: 'fileName',
+            type: 'string'
           },
           {
             internalType: 'string',
-            name: 'fileName',
+            name: 'fileType',
             type: 'string'
           },
           {
@@ -496,6 +546,11 @@ export default [
             internalType: 'string',
             name: 'description',
             type: 'string'
+          },
+          {
+            internalType: 'enum FileStorage.Category',
+            name: 'category',
+            type: 'uint8'
           }
         ],
         internalType: 'struct FileStorage.File',
@@ -518,13 +573,13 @@ export default [
             type: 'uint256'
           },
           {
-            internalType: 'enum FileStorage.FileType',
-            name: 'fileType',
-            type: 'uint8'
+            internalType: 'string',
+            name: 'fileName',
+            type: 'string'
           },
           {
             internalType: 'string',
-            name: 'fileName',
+            name: 'fileType',
             type: 'string'
           },
           {
@@ -541,6 +596,11 @@ export default [
             internalType: 'string',
             name: 'description',
             type: 'string'
+          },
+          {
+            internalType: 'enum FileStorage.Category',
+            name: 'category',
+            type: 'uint8'
           }
         ],
         internalType: 'struct FileStorage.File[]',
@@ -569,13 +629,13 @@ export default [
             type: 'uint256'
           },
           {
-            internalType: 'enum FileStorage.FileType',
-            name: 'fileType',
-            type: 'uint8'
+            internalType: 'string',
+            name: 'fileName',
+            type: 'string'
           },
           {
             internalType: 'string',
-            name: 'fileName',
+            name: 'fileType',
             type: 'string'
           },
           {
@@ -592,6 +652,11 @@ export default [
             internalType: 'string',
             name: 'description',
             type: 'string'
+          },
+          {
+            internalType: 'enum FileStorage.Category',
+            name: 'category',
+            type: 'uint8'
           }
         ],
         internalType: 'struct FileStorage.File',
@@ -614,13 +679,13 @@ export default [
             type: 'uint256'
           },
           {
-            internalType: 'enum FileStorage.FileType',
-            name: 'fileType',
-            type: 'uint8'
+            internalType: 'string',
+            name: 'fileName',
+            type: 'string'
           },
           {
             internalType: 'string',
-            name: 'fileName',
+            name: 'fileType',
             type: 'string'
           },
           {
@@ -637,6 +702,11 @@ export default [
             internalType: 'string',
             name: 'description',
             type: 'string'
+          },
+          {
+            internalType: 'enum FileStorage.Category',
+            name: 'category',
+            type: 'uint8'
           }
         ],
         internalType: 'struct FileStorage.File[]',
@@ -650,14 +720,14 @@ export default [
   {
     inputs: [
       {
-        internalType: 'enum FileStorage.FileType',
-        name: 't',
-        type: 'uint8'
-      },
-      {
         internalType: 'uint256',
         name: 'index',
         type: 'uint256'
+      },
+      {
+        internalType: 'enum FileStorage.Category',
+        name: 'cat',
+        type: 'uint8'
       }
     ],
     name: 'removeFile',
@@ -673,7 +743,7 @@ export default [
         type: 'address'
       },
       {
-        internalType: 'enum FileStorage.FileType',
+        internalType: 'enum FileStorage.Category',
         name: '',
         type: 'uint8'
       },
@@ -691,13 +761,13 @@ export default [
         type: 'uint256'
       },
       {
-        internalType: 'enum FileStorage.FileType',
-        name: 'fileType',
-        type: 'uint8'
+        internalType: 'string',
+        name: 'fileName',
+        type: 'string'
       },
       {
         internalType: 'string',
-        name: 'fileName',
+        name: 'fileType',
         type: 'string'
       },
       {
@@ -714,6 +784,11 @@ export default [
         internalType: 'string',
         name: 'description',
         type: 'string'
+      },
+      {
+        internalType: 'enum FileStorage.Category',
+        name: 'category',
+        type: 'uint8'
       }
     ],
     stateMutability: 'view',
@@ -721,11 +796,6 @@ export default [
   },
   {
     inputs: [
-      {
-        internalType: 'enum FileStorage.FileType',
-        name: 'fileType',
-        type: 'uint8'
-      },
       {
         internalType: 'uint256',
         name: 'id',
@@ -745,6 +815,16 @@ export default [
         internalType: 'string',
         name: 'description',
         type: 'string'
+      },
+      {
+        internalType: 'enum FileStorage.Category',
+        name: 'prevCategory',
+        type: 'uint8'
+      },
+      {
+        internalType: 'enum FileStorage.Category',
+        name: 'newCategory',
+        type: 'uint8'
       }
     ],
     name: 'updateFile',

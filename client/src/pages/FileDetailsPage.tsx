@@ -16,6 +16,8 @@ import {
   Stack,
   StackDivider,
   VStack,
+  Wrap,
+  WrapItem,
   useColorModeValue
 } from '@chakra-ui/react'
 import { useEffect, useRef } from 'react'
@@ -28,7 +30,7 @@ import VideoPlaceholder from '../assets/video-placeholder.png'
 import { AudioPlayer, Spinner, VideoPlayer } from '../components'
 import EditableControls from '../components/EditableControls'
 import requireConnect from '../components/hoc/requireConnection'
-import { FileType, fileTypeString, fileTypeUrlMapping, fnMapping } from '../constants'
+import { categoryFunctionMapping, categoryNameMapping, categoryUrlMapping } from '../constants'
 import useFileRead from '../hooks/useFileRead'
 import useFileWrite from '../hooks/useFileWrite'
 import { IFileInfo } from '../interfaces'
@@ -38,17 +40,16 @@ const FileDetailsPage = () => {
   const nameRef = useRef<HTMLInputElement>(null)
   const urlRef = useRef<HTMLInputElement>(null)
   const descRef = useRef<HTMLInputElement>(null)
-  const typeRef = useRef<HTMLSelectElement>(null)
-
-  const primaryFontColor = useColorModeValue('gray.700', 'gray.200')
-  const secondaryFontColor = useColorModeValue('gray.300', 'gray.600')
+  const categoryRef = useRef<HTMLSelectElement>(null)
 
   const navigate = useNavigate()
   const params = useParams()
   const parts: string[] = params['*']?.split('/') as string[]
+  const primaryFontColor = useColorModeValue('gray.700', 'gray.200')
+  const secondaryFontColor = useColorModeValue('gray.300', 'gray.600')
 
   const { data, error, isError, isLoading } = useFileRead<IFileInfo>(
-    fnMapping[parts[0]],
+    categoryFunctionMapping[parts[0]],
     parseInt(parts[1])
   )
 
@@ -58,28 +59,23 @@ const FileDetailsPage = () => {
   } = useFileWrite()
 
   useEffect(() => {
-    if (isSuccessUpdate) navigate(`/${fileTypeUrlMapping[data?.fileType]}`)
-  }, [data?.fileType, isSuccessUpdate, navigate])
+    if (isSuccessUpdate) navigate(`/${categoryUrlMapping[data?.category]}`)
+  }, [data?.category, isSuccessUpdate, navigate])
 
   useEffect(() => {
-    if (isSuccessRemove) navigate(`/${fileTypeUrlMapping[data?.fileType]}`)
-  }, [data?.fileType, isSuccessRemove, navigate])
+    if (isSuccessRemove) navigate(`/${categoryUrlMapping[data?.category]}`)
+  }, [data?.category, isSuccessRemove, navigate])
 
   const handleReload = () => location.reload()
-
   const handleDownload = () => downloadLink(data?.filePath, data?.fileName)
-
   const handleShare = () => copyTextToClipboard(data?.filePath)
-
-  const handleDelete = () => remove({ args: [data?.fileType, data?.id] })
-
+  const handleDelete = () => remove({ args: [data?.id, data?.category] })
   const handleUpdate = () => {
     const name = nameRef.current?.value
     const url = urlRef.current?.value
     const desc = descRef.current?.value
-    const type = typeRef.current?.value
-    console.log(type)
-    update({ args: [type, data?.id, name, url, desc] })
+    const newCategory = categoryRef.current?.value
+    update({ args: [data?.id, name, url, desc, data.category, newCategory] })
   }
 
   const imageMapping: { [key: number]: ImageProps } = {
@@ -95,22 +91,21 @@ const FileDetailsPage = () => {
 
   if (isError) throw error
 
-  const shouldLoadImage =
-    data.fileType == FileType.NFT ||
-    data.fileType == FileType.PHOTO ||
-    data.fileType == FileType.DOCUMENT
+  const isImage = data.fileType.includes('image')
+  const isVideo = data.fileType.includes('video')
+  const isAudio = data.fileType.includes('audio')
 
   return (
     <SimpleGrid columns={{ sm: 1, md: 2 }} spacing={6} padding='1rem 2rem' mt={20}>
-      {shouldLoadImage && (
+      {isImage && (
         <Center borderRadius='md' overflow='hidden'>
-          <Image {...imageMapping[data?.fileType]} objectFit='cover' borderRadius='md' maxH={600} />
+          <Image src={data.filePath} objectFit='cover' borderRadius='md' maxH={600} />
         </Center>
       )}
-      {data.fileType === FileType.VIDEO && <VideoPlayer src={data.filePath} />}
-      {data.fileType === FileType.AUDIO && (
+      {isVideo && <VideoPlayer src={data.filePath} />}
+      {isAudio && (
         <VStack spacing={4}>
-          <Image {...imageMapping[data?.fileType]} objectFit='cover' borderRadius='md' maxH={600} />
+          <Image {...imageMapping[data?.category]} objectFit='cover' borderRadius='md' maxH={600} />
           <AudioPlayer src={data.filePath} />
         </VStack>
       )}
@@ -194,20 +189,29 @@ const FileDetailsPage = () => {
         </Box>
         <Box>
           <Heading size='xs' textTransform='uppercase'>
-            File Type
+            Category / File Type
           </Heading>
           <HStack spacing={2} pt='2' justifyContent='space-between' w='100%'>
-            <Badge variant='subtle' colorScheme='green' borderRadius='md'>
-              {fileTypeString[data.fileType]}
-            </Badge>
+            <Wrap>
+              <WrapItem>
+                <Badge variant='subtle' colorScheme='green' borderRadius='md'>
+                  {categoryNameMapping[data.category]}
+                </Badge>
+              </WrapItem>
+              <WrapItem>
+                <Badge variant='subtle' colorScheme='green' borderRadius='md'>
+                  {data.fileType}
+                </Badge>
+              </WrapItem>
+            </Wrap>
             <Select
-              defaultValue={data.fileType}
-              placeholder='Select type'
+              defaultValue={data.category}
+              placeholder='Select category'
               variant='filled'
               maxW='150px'
               size='sm'
               borderRadius='md'
-              ref={typeRef}
+              ref={categoryRef}
             >
               <option value='0'>NFT</option>
               <option value='1'>Photo</option>

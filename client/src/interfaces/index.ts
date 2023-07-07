@@ -1,10 +1,11 @@
-import { FileType } from '../constants'
+import { Category } from '../constants'
 
 export interface IFileInfo {
   id: string
-  fileType: FileType
   fileName: string
+  fileType: string
   filePath: string
   externalUrl: string
   description: string
+  category: Category
 }

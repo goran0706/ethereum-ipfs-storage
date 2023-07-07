@@ -12,7 +12,7 @@ export const STORAGE_ABI = FileStorage
 
 export const contract = { address: STORAGE_ADDRESS, abi: STORAGE_ABI as Abi }
 
-export enum FileType {
+export enum Category {
   NFT = 0,
   PHOTO = 1,
   VIDEO = 2,
@@ -20,23 +20,23 @@ export enum FileType {
   DOCUMENT = 4
 }
 
-export const fileTypeString: { [key: number]: string } = {
-  [FileType.NFT]: 'NFT',
-  [FileType.PHOTO]: 'Photo',
-  [FileType.VIDEO]: 'Video',
-  [FileType.AUDIO]: 'Audio',
-  [FileType.DOCUMENT]: 'Document'
+export const categoryNameMapping: { [key: number]: string } = {
+  [Category.NFT]: 'NFT',
+  [Category.PHOTO]: 'Photo',
+  [Category.VIDEO]: 'Video',
+  [Category.AUDIO]: 'Audio',
+  [Category.DOCUMENT]: 'Document'
 }
 
-export const fileTypeUrlMapping: { [key: number]: string } = {
-  [FileType.NFT]: 'nfts',
-  [FileType.PHOTO]: 'photos',
-  [FileType.VIDEO]: 'videos',
-  [FileType.AUDIO]: 'audios',
-  [FileType.DOCUMENT]: 'documents'
+export const categoryUrlMapping: { [key: number]: string } = {
+  [Category.NFT]: 'nfts',
+  [Category.PHOTO]: 'photos',
+  [Category.VIDEO]: 'videos',
+  [Category.AUDIO]: 'audios',
+  [Category.DOCUMENT]: 'documents'
 }
 
-export const fnMapping: { [key: string]: string } = {
+export const categoryFunctionMapping: { [key: string]: string } = {
   nfts: 'getNFT',
   photos: 'getPhoto',
   videos: 'getVideo',

@@ -7,14 +7,15 @@ import "hardhat/console.sol";
 contract FileStorage {
     struct File {
         uint256 id;
-        FileType fileType;
         string fileName;
+        string fileType;
         string filePath;
         string externalUrl;
         string description;
+        Category category;
     }
 
-    enum FileType {
+    enum Category {
         NFT,
         PHOTO,
         VIDEO,
@@ -23,7 +24,7 @@ contract FileStorage {
     }
 
     /*========================= CONTRACT STATE =========================*/
-    mapping(address => mapping(FileType => File[])) public store;
+    mapping(address => mapping(Category => File[])) public store;
 
     /*========================= EVENTS =================================*/
     event FileStored(File file);
@@ -32,90 +33,93 @@ contract FileStorage {
 
     /*========================= PUBLIC API =============================*/
     function addFile(
-        FileType fileType,
         string memory fileName,
+        string memory fileType,
         string memory filePath,
         string memory externalUrl,
-        string memory description
+        string memory description,
+        Category category
     ) public {
-        uint256 id = store[msg.sender][fileType].length;
         File memory file = File(
-            id,
-            fileType,
+            store[msg.sender][category].length,
             fileName,
+            fileType,
             filePath,
             externalUrl,
-            description
+            description,
+            category
         );
-        store[msg.sender][fileType].push(file);
+        store[msg.sender][category].push(file);
         emit FileStored(file);
     }
 
     function updateFile(
-        FileType fileType,
         uint256 id,
         string memory fileName,
         string memory externalUrl,
-        string memory description
+        string memory description,
+        Category prevCategory,
+        Category newCategory
     ) public {
-        File memory file = store[msg.sender][fileType][id];
-        file.fileType = fileType;
+        File memory file = store[msg.sender][prevCategory][id];
+        file.id = store[msg.sender][newCategory].length;
+        file.category = newCategory;
         file.fileName = fileName;
         file.externalUrl = externalUrl;
         file.description = description;
-        store[msg.sender][fileType][id] = file;
+        store[msg.sender][newCategory].push(file);
         emit FileUpdated(file);
     }
 
-    function removeFile(FileType t, uint256 index) public {
+    function removeFile(uint256 index, Category cat) public {
         address acc = msg.sender;
-        uint256 lastIndex = store[acc][t].length - 1;
-        File memory file = store[acc][t][index];
-        store[acc][t][index] = store[acc][t][lastIndex];
-        store[acc][t][index].id = index;
-        store[acc][t].pop();
+        uint256 lastIndex = store[acc][cat].length - 1;
+        File memory file = store[acc][cat][index];
+        store[acc][cat][index] = store[acc][cat][lastIndex];
+        store[acc][cat][index].id = index;
+        store[acc][cat].pop();
         emit FileRemoved(file);
     }
 
     /*========================= VIEWS ================================*/
     function getNFTs() public view returns (File[] memory) {
-        return store[msg.sender][FileType.NFT];
+        return store[msg.sender][Category.NFT];
     }
 
     function getNFT(uint256 id) public view returns (File memory) {
-        return store[msg.sender][FileType.NFT][id];
+        return store[msg.sender][Category.NFT][id];
     }
 
     function getPhotos() public view returns (File[] memory) {
-        return store[msg.sender][FileType.PHOTO];
+        return store[msg.sender][Category.PHOTO];
     }
 
     function getPhoto(uint256 id) public view returns (File memory) {
-        return store[msg.sender][FileType.PHOTO][id];
+        return store[msg.sender][Category.PHOTO][id];
     }
 
     function getVideos() public view returns (File[] memory) {
-        return store[msg.sender][FileType.VIDEO];
+        return store[msg.sender][Category.VIDEO];
     }
 
     function getVideo(uint256 id) public view returns (File memory) {
-        return store[msg.sender][FileType.VIDEO][id];
+        return store[msg.sender][Category.VIDEO][id];
     }
 
     function getAudios() public view returns (File[] memory) {
-        return store[msg.sender][FileType.AUDIO];
+        return store[msg.sender][Category.AUDIO];
     }
 
     function getAudio(uint256 id) public view returns (File memory) {
-        return store[msg.sender][FileType.AUDIO][id];
+        return store[msg.sender][Category.AUDIO][id];
     }
 
     function getDocuments() public view returns (File[] memory) {
-        return store[msg.sender][FileType.DOCUMENT];
+        return store[msg.sender][Category.DOCUMENT];
     }
 
     function getDocument(uint256 id) public view returns (File memory) {
-        return store[msg.sender][FileType.DOCUMENT][id];
+        return store[msg.sender][Category.DOCUMENT][id];
     }
 
     /*========================= INTERNAL API ===========================*/

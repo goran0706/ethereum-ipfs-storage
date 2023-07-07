@@ -1,6 +1,6 @@
 const { expect } = require("chai");
 
-const FileType = {
+const Category = {
   NFT: 0,
   PHOTO: 1,
   VIDEO: 2,
@@ -8,14 +8,14 @@ const FileType = {
   DOCUMENT: 4,
 };
 
-Object.freeze(FileType);
+Object.freeze(Category);
 
 const enumToFuncMapping = {
-  [FileType.NFT]: "getNFTs",
-  [FileType.PHOTO]: "getPhotos",
-  [FileType.VIDEO]: "getVideos",
-  [FileType.AUDIO]: "getAudios",
-  [FileType.DOCUMENT]: "getDocuments",
+  [Category.NFT]: "getNFTs",
+  [Category.PHOTO]: "getPhotos",
+  [Category.VIDEO]: "getVideos",
+  [Category.AUDIO]: "getAudios",
+  [Category.DOCUMENT]: "getDocuments",
 };
 
 describe("FileStorage", function () {
@@ -29,9 +29,9 @@ describe("FileStorage", function () {
   });
 
   it("should add a file", async () => {
-    for (const key in FileType) {
-      if (Object.hasOwnProperty.call(FileType, key)) {
-        const type = FileType[key];
+    for (const key in Category) {
+      if (Object.hasOwnProperty.call(Category, key)) {
+        const type = Category[key];
         const method = enumToFuncMapping[type];
         let files = await store[method]();
         expect(files.length).to.equal(0);
@@ -44,9 +44,9 @@ describe("FileStorage", function () {
   });
 
   it("should list all files", async () => {
-    for (const key in FileType) {
-      if (Object.hasOwnProperty.call(FileType, key)) {
-        const type = FileType[key];
+    for (const key in Category) {
+      if (Object.hasOwnProperty.call(Category, key)) {
+        const type = Category[key];
         const method = enumToFuncMapping[type];
         const files = await store[method]();
         expect(files.length).to.equal(1);
@@ -55,12 +55,12 @@ describe("FileStorage", function () {
   });
 
   it("should list a file", async () => {
-    for (const key in FileType) {
-      if (Object.hasOwnProperty.call(FileType, key)) {
-        const type = FileType[key];
+    for (const key in Category) {
+      if (Object.hasOwnProperty.call(Category, key)) {
+        const type = Category[key];
         const method = enumToFuncMapping[type].slice(0, -1);
         const file = await store[method](0);
-        expect(file.fileType).to.equal(type);
+        expect(file.category).to.equal(type);
         expect(file.fileName).to.equal(dummy[1]);
         expect(file.path).to.equal(dummy[2]);
         expect(file.externalUrl).to.equal(dummy[3]);
@@ -70,12 +70,12 @@ describe("FileStorage", function () {
   });
 
   it("should update a file", async () => {
-    for (const key in FileType) {
-      if (Object.hasOwnProperty.call(FileType, key)) {
-        const type = FileType[key];
+    for (const key in Category) {
+      if (Object.hasOwnProperty.call(Category, key)) {
+        const type = Category[key];
         const method = enumToFuncMapping[type].slice(0, -1);
         const file = await store[method](0);
-        expect(file.fileType).to.equal(type);
+        expect(file.category).to.equal(type);
         expect(file.fileName).to.equal(dummy[1]);
         expect(file.path).to.equal(dummy[2]);
         expect(file.externalUrl).to.equal(dummy[3]);
@@ -89,7 +89,7 @@ describe("FileStorage", function () {
         await store.updateFile(0, ...values);
 
         const updated = await store[method](0);
-        expect(updated.fileType).to.equal(type);
+        expect(updated.category).to.equal(type);
         expect(updated.fileName).to.equal(dummy[1] + phrase);
         expect(updated.path).to.equal(dummy[2] + phrase);
         expect(updated.externalUrl).to.equal(dummy[3] + phrase);
@@ -99,9 +99,9 @@ describe("FileStorage", function () {
   });
 
   it("should remove a file", async () => {
-    for (const key in FileType) {
-      if (Object.hasOwnProperty.call(FileType, key)) {
-        const type = FileType[key];
+    for (const key in Category) {
+      if (Object.hasOwnProperty.call(Category, key)) {
+        const type = Category[key];
         const method = enumToFuncMapping[type];
         let files = await store[method]();
         expect(files.length).to.equal(1);
