@@ -59,6 +59,7 @@ contract FileStorage {
         string memory description
     ) public {
         File memory file = store[msg.sender][fileType][id];
+        file.fileType = fileType;
         file.fileName = fileName;
         file.externalUrl = externalUrl;
         file.description = description;

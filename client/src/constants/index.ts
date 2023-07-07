@@ -20,7 +20,7 @@ export enum FileType {
   DOCUMENT = 4
 }
 
-export const fileTypeToStringMapping: { [key: number]: string } = {
+export const typeStringMapping: { [key: number]: string } = {
   [FileType.NFT]: 'nfts',
   [FileType.PHOTO]: 'photos',
   [FileType.VIDEO]: 'videos',

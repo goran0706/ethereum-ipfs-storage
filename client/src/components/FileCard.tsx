@@ -20,7 +20,7 @@ import AudioPlaceholder from '../assets/audio-placeholder.png'
 import DocumentPlaceholder from '../assets/document-placeholder.png'
 import PicturePlaceholder from '../assets/picture-placeholder.png'
 import VideoPlaceholder from '../assets/video-placeholder.png'
-import { fileTypeToStringMapping } from '../constants'
+import { typeStringMapping } from '../constants'
 import { IFileInfo } from '../interfaces'
 import { copyTextToClipboard, downloadLink } from '../services'
 
@@ -35,7 +35,7 @@ const FileCard = ({ id, fileType, fileName, filePath, externalUrl, description }
   }
 
   let { pathname } = useLocation()
-  pathname = pathname === '/' ? fileTypeToStringMapping[fileType] : pathname
+  pathname = pathname === '/' ? typeStringMapping[fileType] : pathname
 
   const handleDownload = () => downloadLink(filePath, fileName)
   const handleShare = () => copyTextToClipboard(filePath)

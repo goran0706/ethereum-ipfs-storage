@@ -5,10 +5,13 @@ import {
   Editable,
   EditableInput,
   EditablePreview,
+  HStack,
   Heading,
   Image,
   ImageProps,
   Input,
+  Radio,
+  RadioGroup,
   SimpleGrid,
   Stack,
   StackDivider,
@@ -25,16 +28,17 @@ import VideoPlaceholder from '../assets/video-placeholder.png'
 import { AudioPlayer, Spinner, VideoPlayer } from '../components'
 import EditableControls from '../components/EditableControls'
 import requireConnect from '../components/hoc/requireConnection'
-import { FileType, fileTypeToStringMapping, fnMapping } from '../constants'
+import { FileType, fnMapping, typeStringMapping } from '../constants'
 import useFileRead from '../hooks/useFileRead'
 import useFileWrite from '../hooks/useFileWrite'
 import { IFileInfo } from '../interfaces'
-import { downloadLink } from '../services'
+import { copyTextToClipboard, downloadLink } from '../services'
 
 const FileDetailsPage = () => {
   const nameRef = useRef<HTMLInputElement>(null)
   const urlRef = useRef<HTMLInputElement>(null)
   const descRef = useRef<HTMLInputElement>(null)
+  const typeRef = useRef<HTMLInputElement>(null)
 
   const primaryFontColor = useColorModeValue('gray.700', 'gray.200')
   const secondaryFontColor = useColorModeValue('gray.300', 'gray.600')
@@ -54,16 +58,18 @@ const FileDetailsPage = () => {
   } = useFileWrite()
 
   useEffect(() => {
-    if (isSuccessUpdate) navigate(`/${fileTypeToStringMapping[data?.fileType]}`)
+    if (isSuccessUpdate) navigate(`/${typeStringMapping[data?.fileType]}`)
   }, [data?.fileType, isSuccessUpdate, navigate])
 
   useEffect(() => {
-    if (isSuccessRemove) navigate(`/${fileTypeToStringMapping[data?.fileType]}`)
+    if (isSuccessRemove) navigate(`/${typeStringMapping[data?.fileType]}`)
   }, [data?.fileType, isSuccessRemove, navigate])
 
   const handleReload = () => location.reload()
 
   const handleDownload = () => downloadLink(data?.filePath, data?.fileName)
+
+  const handleShare = () => copyTextToClipboard(data?.filePath)
 
   const handleDelete = () => remove({ args: [data?.fileType, data?.id] })
 
@@ -71,7 +77,8 @@ const FileDetailsPage = () => {
     const name = nameRef.current?.value
     const url = urlRef.current?.value
     const desc = descRef.current?.value
-    update({ args: [data?.fileType, data?.id, name, url, desc] })
+    const type = typeRef.current?.value
+    update({ args: [type, data?.id, name, url, desc] })
   }
 
   const imageMapping: { [key: number]: ImageProps } = {
@@ -184,7 +191,21 @@ const FileDetailsPage = () => {
             <EditableControls />
           </Editable>
         </Box>
-        <Stack direction={['column', 'row']} spacing={2} wrap='wrap' w='full'>
+        <Box>
+          <Heading size='xs' textTransform='uppercase'>
+            File Type
+          </Heading>
+          <RadioGroup pt={6} gap={2} name='type' defaultValue={data.fileType.toString()}>
+            <HStack spacing='24px' wrap='wrap'>
+              <Radio value='0'>NFT</Radio>
+              <Radio value='1'>Photo</Radio>
+              <Radio value='2'>Video</Radio>
+              <Radio value='3'>Audio</Radio>
+              <Radio value='4'>Document</Radio>
+            </HStack>
+          </RadioGroup>
+        </Box>
+        <Stack direction={['column', 'row']} spacing={2} wrap='wrap' w='full' pt={6}>
           <Button size='md' colorScheme='gray' onClick={handleReload}>
             Reload
           </Button>
@@ -196,6 +217,9 @@ const FileDetailsPage = () => {
           </Button>
           <Button size='md' colorScheme='gray' onClick={handleDownload}>
             Download
+          </Button>
+          <Button size='md' colorScheme='gray' onClick={handleShare}>
+            Share Link
           </Button>
         </Stack>
       </Stack>
