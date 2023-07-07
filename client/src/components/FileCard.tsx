@@ -4,12 +4,15 @@ import {
   Card,
   CardBody,
   CardFooter,
+  Center,
   Heading,
   Image,
   ImageProps,
   Stack,
   StackDivider,
-  Text
+  Text,
+  Wrap,
+  WrapItem
 } from '@chakra-ui/react'
 import { Link, useLocation } from 'react-router-dom'
 
@@ -48,7 +51,9 @@ const FileCard = ({ id, fileType, fileName, filePath, externalUrl, description }
       borderRadius='md'
       width='300px'
     >
-      <Image {...imageMapping[fileType]} objectFit='cover' maxH={200} />
+      <Center overflow='hidden'>
+        <Image {...imageMapping[fileType]} objectFit='cover' h={200} w='full' />
+      </Center>
       <CardBody>
         <Stack divider={<StackDivider />} spacing='4'>
           <Box>
@@ -78,17 +83,23 @@ const FileCard = ({ id, fileType, fileName, filePath, externalUrl, description }
         </Stack>
       </CardBody>
       <CardFooter>
-        <Stack direction={['column', 'row']} spacing='4px' wrap='wrap'>
-          <Button size='sm' colorScheme='gray' as={Link} to={`${pathname}/${id}`}>
-            Details
-          </Button>
-          <Button size='sm' colorScheme='gray' onClick={handleDownload}>
-            Download
-          </Button>
-          <Button size='sm' colorScheme='gray' onClick={handleShare}>
-            Share
-          </Button>
-        </Stack>
+        <Wrap>
+          <WrapItem>
+            <Button size='sm' colorScheme='gray' as={Link} to={`${pathname}/${id}`}>
+              Details
+            </Button>
+          </WrapItem>
+          <WrapItem>
+            <Button size='sm' colorScheme='gray' onClick={handleDownload}>
+              Download
+            </Button>
+          </WrapItem>
+          <WrapItem>
+            <Button size='sm' colorScheme='gray' onClick={handleShare}>
+              Share
+            </Button>
+          </WrapItem>
+        </Wrap>
       </CardFooter>
     </Card>
   )

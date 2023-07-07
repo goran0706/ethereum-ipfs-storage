@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Center,
   Editable,
   EditableInput,
   EditablePreview,
@@ -9,7 +10,6 @@ import {
   ImageProps,
   Input,
   SimpleGrid,
-  Spinner,
   Stack,
   StackDivider,
   VStack,
@@ -22,6 +22,7 @@ import AudioPlaceholder from '../assets/audio-placeholder.png'
 import DocumentPlaceholder from '../assets/document-placeholder.png'
 import PicturePlaceholder from '../assets/picture-placeholder.png'
 import VideoPlaceholder from '../assets/video-placeholder.png'
+import { AudioPlayer, Spinner, VideoPlayer } from '../components'
 import EditableControls from '../components/EditableControls'
 import requireConnect from '../components/hoc/requireConnection'
 import { FileType, fileTypeToStringMapping, fnMapping } from '../constants'
@@ -53,8 +54,8 @@ const FileDetailsPage = () => {
   } = useFileWrite()
 
   useEffect(() => {
-    if (isSuccessUpdate) location.reload()
-  }, [isSuccessUpdate])
+    if (isSuccessUpdate) navigate(`/${fileTypeToStringMapping[data?.fileType]}`)
+  }, [data?.fileType, isSuccessUpdate, navigate])
 
   useEffect(() => {
     if (isSuccessRemove) navigate(`/${fileTypeToStringMapping[data?.fileType]}`)
@@ -92,21 +93,17 @@ const FileDetailsPage = () => {
     data.fileType == FileType.DOCUMENT
 
   return (
-    <SimpleGrid columns={{ sm: 1, md: 2 }} spacing={6} padding='1rem 2rem' mt={8}>
+    <SimpleGrid columns={{ sm: 1, md: 2 }} spacing={6} padding='1rem 2rem' mt={20}>
       {shouldLoadImage && (
-        <Image {...imageMapping[data?.fileType]} objectFit='cover' borderRadius='md' maxH={600} />
-      )}
-      {data.fileType === FileType.VIDEO && (
-        <video src={data.filePath} controls width='100%' height='100%'>
-          Your browser does not support the video tag or unsupported video file.
-        </video>
-      )}
-      {data.fileType === FileType.AUDIO && (
-        <VStack spacing={2}>
+        <Center borderRadius='md' overflow='hidden'>
           <Image {...imageMapping[data?.fileType]} objectFit='cover' borderRadius='md' maxH={600} />
-          <audio src={data?.filePath} controls>
-            Your browser does not support the audio tag or unsupported audio file.
-          </audio>
+        </Center>
+      )}
+      {data.fileType === FileType.VIDEO && <VideoPlayer src={data.filePath} />}
+      {data.fileType === FileType.AUDIO && (
+        <VStack spacing={4}>
+          <Image {...imageMapping[data?.fileType]} objectFit='cover' borderRadius='md' maxH={600} />
+          <AudioPlayer src={data.filePath} />
         </VStack>
       )}
       <Stack divider={<StackDivider />} spacing='4'>
@@ -187,7 +184,7 @@ const FileDetailsPage = () => {
             <EditableControls />
           </Editable>
         </Box>
-        <Stack direction={['column', 'row']} spacing={2} wrap='wrap' alignItems='center'>
+        <Stack direction={['column', 'row']} spacing={2} wrap='wrap' w='full'>
           <Button size='md' colorScheme='gray' onClick={handleReload}>
             Reload
           </Button>

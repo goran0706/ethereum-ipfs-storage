@@ -1,10 +1,7 @@
 import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
   Box,
   Button,
+  Center,
   FormControl,
   FormHelperText,
   FormLabel,
@@ -15,7 +12,9 @@ import {
   RadioGroup,
   Text,
   Textarea,
-  VStack
+  VStack,
+  VisuallyHiddenInput,
+  useToast
 } from '@chakra-ui/react'
 import { Web3Button } from '@web3modal/react'
 import { ChangeEvent, FormEvent, useEffect, useReducer, useRef } from 'react'
@@ -52,8 +51,6 @@ interface State {
   fileType: string
   externalUrl: string
   description: string
-  transactionHash: string
-  errorMessage: string
   loading: boolean
 }
 
@@ -68,7 +65,7 @@ const uploadReducer = (state: State, action: Action): State => {
     case ActionTypes.SUCCESS:
       return { ...state, loading: false, ...action.payload }
     case ActionTypes.FAILURE:
-      return { ...state, loading: false, errorMessage: action.payload }
+      return { ...state, loading: false }
     case ActionTypes.RESET:
       return { ...state, ...action.payload }
     default:
@@ -83,33 +80,20 @@ const initialState = {
   fileType: '0',
   externalUrl: '',
   description: '',
-  transactionHash: '',
-  errorMessage: '',
   loading: false
 }
 
 const Uploader = () => {
-  const [
-    {
-      file,
-      preview,
-      fileName,
-      fileType,
-      externalUrl,
-      description,
-      transactionHash,
-      errorMessage,
-      loading
-    },
-    dispatch
-  ] = useReducer(uploadReducer, initialState)
+  const [{ file, preview, fileName, fileType, externalUrl, description, loading }, dispatch] =
+    useReducer(uploadReducer, initialState)
 
   const fileRef = useRef<HTMLInputElement>(null)
 
+  const toast = useToast()
   const { isConnected } = useAccount()
 
   const {
-    addFile: { isLoading, isSuccess, isError, data, error, write }
+    addFile: { isLoading, write }
   } = useFileWrite()
 
   useEffect(() => {
@@ -118,11 +102,6 @@ const Uploader = () => {
       dispatch({ type: ActionTypes.ON_LOAD, payload: { preview: reader.result } })
     if (file && file.type.includes('image')) reader.readAsDataURL(file)
   }, [file])
-
-  useEffect(() => {
-    dispatch({ type: ActionTypes.SUCCESS, payload: { transactionHash: data?.hash } })
-    dispatch({ type: ActionTypes.FAILURE, payload: error?.message || '' })
-  }, [isSuccess, data?.hash, isError, error?.message])
 
   const handleSelect = () => fileRef.current && fileRef.current.click()
 
@@ -147,11 +126,29 @@ const Uploader = () => {
       dispatch({ type: ActionTypes.REQUEST })
       ipfsUpload(file, fileName, fileType, externalUrl, description)
         .then(path => {
+          toast({
+            title: 'IPFS Upload Success',
+            description: path,
+            variant: 'solid',
+            position: 'bottom',
+            status: 'success',
+            duration: 3000,
+            isClosable: true
+          })
           write({ args: [fileType, fileName, path, externalUrl, description] })
           dispatch({ type: ActionTypes.SUCCESS })
         })
         .catch(error => {
           if (error instanceof Error) {
+            toast({
+              title: 'IPFS Upload Failed',
+              description: error.message,
+              variant: 'solid',
+              position: 'bottom',
+              status: 'success',
+              duration: 3000,
+              isClosable: true
+            })
             dispatch({ type: ActionTypes.FAILURE, payload: error.message })
           }
         })
@@ -171,10 +168,14 @@ const Uploader = () => {
               <Input type='file' hidden name='file' ref={fileRef} onChange={handleChange} />
             </HStack>
           </FormControl>
-          {preview && <Image src={preview?.toString()} />}
+          {preview && (
+            <Center borderRadius='md' overflow='hidden' maxH={400}>
+              <Image src={preview?.toString()} objectFit='cover' borderRadius='md' />
+            </Center>
+          )}
           <FormControl>
             <FormLabel>Name</FormLabel>
-            <Input
+            <VisuallyHiddenInput
               type='text'
               name='fileName'
               autoComplete='off'
@@ -214,38 +215,7 @@ const Uploader = () => {
             </RadioGroup>
             <FormHelperText>Please select a file type.</FormHelperText>
           </FormControl>
-          <FormControl>
-            {loading ||
-              (isLoading && (
-                <Alert status='info' borderRadius='md'>
-                  <AlertIcon />
-                  <Box>
-                    <AlertTitle>Pending!</AlertTitle>
-                    <AlertDescription wordBreak='break-all'>Check wallet.</AlertDescription>
-                  </Box>
-                </Alert>
-              ))}
-            {isSuccess && (
-              <Alert status='success' borderRadius='md'>
-                <AlertIcon />
-                <Box>
-                  <AlertTitle>Success!</AlertTitle>
-                  <AlertDescription wordBreak='break-all'>
-                    Transaction: {transactionHash}
-                  </AlertDescription>
-                </Box>
-              </Alert>
-            )}
-            {isError && (
-              <Alert status='error' borderRadius='md'>
-                <AlertIcon />
-                <Box>
-                  <AlertTitle>Error!</AlertTitle>
-                  <AlertDescription wordBreak='break-all'>Error: {errorMessage}</AlertDescription>
-                </Box>
-              </Alert>
-            )}
-          </FormControl>
+          <FormControl></FormControl>
           {isConnected ? (
             <HStack justify='flex-end' w='full'>
               <Button
