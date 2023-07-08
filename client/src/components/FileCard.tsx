@@ -24,15 +24,7 @@ import { categoryUrlMapping } from '../constants'
 import { IFileInfo } from '../interfaces'
 import { copyTextToClipboard, downloadLink } from '../services'
 
-const FileCard = ({
-  id,
-  fileName,
-  fileType,
-  filePath,
-  externalUrl,
-  description,
-  category
-}: IFileInfo) => {
+const FileCard = ({ id, fileName, filePath, externalUrl, description, category }: IFileInfo) => {
   const { pathname } = useLocation()
   const path = pathname === '/' ? categoryUrlMapping[category] : pathname
 
