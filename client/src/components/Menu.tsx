@@ -11,7 +11,7 @@ const Menu = ({ children }: IMenu) => {
   const elements = Children.map(children, (child, index) => cloneElement(child, { key: index }))
 
   return (
-    <Stack direction={['column', 'row']} justify='center' spacing={2}>
+    <Stack direction='row' justifyContent='center' alignItems='center' spacing={2}>
       {elements}
     </Stack>
   )

@@ -94,9 +94,15 @@ const FileDetailsPage = () => {
   const isImage = data.fileType.includes('image')
   const isVideo = data.fileType.includes('video')
   const isAudio = data.fileType.includes('audio')
+  const showPlaceholder = !isImage && !isVideo && !isAudio
 
   return (
     <SimpleGrid columns={{ sm: 1, md: 2 }} spacing={6} padding='1rem 2rem' mt={20}>
+      {showPlaceholder && (
+        <Center borderRadius='md' overflow='hidden'>
+          <Image {...imageMapping[5]} objectFit='cover' borderRadius='md' maxH={600} />
+        </Center>
+      )}
       {isImage && (
         <Center borderRadius='md' overflow='hidden'>
           <Image src={data.filePath} objectFit='cover' borderRadius='md' maxH={600} />

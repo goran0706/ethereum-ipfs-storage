@@ -14,6 +14,7 @@ const useFileRead = <T>(getter: string, id?: number) => {
 
   const { data, error, isError, isLoading } = useContractRead(config)
 
+  console.log(getter, id, data, error)
   return {
     data: data as T,
     error,

@@ -35,7 +35,7 @@ export default function useFileReads() {
 
   const list = [nfts, photos, videos, audios, documents]
 
-  const data = list.reduce((acc, curr) => curr && acc.concat(curr), [])
+  const data = list.reduce((acc, curr) => curr && acc?.concat(curr), [])
 
   const error = errorNFTs || errorPhotos || errorVideos || errorAudios || errorDocuments
 

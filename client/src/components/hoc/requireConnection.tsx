@@ -12,18 +12,14 @@ const requireConnect = (Component: ComponentType) => () => {
     if (!isConnected) navigate('/')
   }, [isConnected, navigate])
 
-  if (!isConnected) {
-    return (
-      <VStack mt={60} spacing={2}>
-        <Text>Wallet connection required.</Text>
-        <Web3Button icon='show' label='Connect Wallet' balance='show' />
-      </VStack>
-    )
-  }
-
-  return <Component />
+  return !isConnected ? (
+    <VStack mt={60} spacing={2}>
+      <Text>Wallet connection required.</Text>
+      <Web3Button icon='show' label='Connect Wallet' balance='show' />
+    </VStack>
+  ) : (
+    <Component />
+  )
 }
 
 export default requireConnect
-
-
